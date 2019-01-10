@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="ca66c8f3-d616-45e4-96e2-c8f2680a4c15" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/elgamal.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/elgamal.py" beforeDir="false" afterPath="$PROJECT_DIR$/elgamal.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -12,15 +12,19 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/ElGamal_py$elgamal.coverage" NAME="elgamal2 Coverage Results" MODIFIED="1545782716873" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/ElGamal_py$test_prime.coverage" NAME="elgamal2 Coverage Results" MODIFIED="1546884637668" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/ElGamal_py$elgamal.coverage" NAME="elgamal Coverage Results" MODIFIED="1547110008414" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/elgamal.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="361">
-              <caret line="41" column="21" lean-forward="true" selection-start-line="41" selection-start-column="21" selection-end-line="41" selection-end-column="21" />
+            <state relative-caret-position="378">
+              <caret line="27" column="115" selection-start-line="27" selection-start-column="115" selection-end-line="27" selection-end-column="115" />
+              <folding>
+                <element signature="e#113#126#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -49,21 +53,27 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/venv/elgamal.py" />
-        <option value="$PROJECT_DIR$/elgamal.py" />
         <option value="$PROJECT_DIR$/elgamal2.py" />
+        <option value="$PROJECT_DIR$/prime.py" />
+        <option value="$PROJECT_DIR$/test-elgamal.py" />
+        <option value="$PROJECT_DIR$/elgamal.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" fullScreen="true">
-    <option name="width" value="838" />
-    <option name="height" value="1050" />
+  <component name="ProjectFrameBounds">
+    <option name="y" value="23" />
+    <option name="width" value="1630" />
+    <option name="height" value="1027" />
   </component>
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -75,7 +85,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -138,22 +147,28 @@
       <workItem from="1545741146564" duration="7492000" />
       <workItem from="1545759808867" duration="2429000" />
       <workItem from="1545768522120" duration="6814000" />
+      <workItem from="1546782902949" duration="1152000" />
+      <workItem from="1546788590655" duration="150000" />
+      <workItem from="1546880621113" duration="3670000" />
+      <workItem from="1546888478056" duration="136000" />
+      <workItem from="1546936104936" duration="1812000" />
+      <workItem from="1547109180768" duration="1219000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="16735000" />
+    <option name="totallyTimeSpent" value="24874000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="838" height="1050" extended-state="0" />
+    <frame x="0" y="23" width="1630" height="1027" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24748744" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.119647354" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.24591836" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.2507837" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -182,17 +197,15 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/prime.py" />
+    <entry file="file://$PROJECT_DIR$/test-elgamal.py" />
     <entry file="file://$PROJECT_DIR$/elgamal.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret selection-end-line="7" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/elgamal.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="361">
-          <caret line="41" column="21" lean-forward="true" selection-start-line="41" selection-start-column="21" selection-end-line="41" selection-end-column="21" />
+        <state relative-caret-position="378">
+          <caret line="27" column="115" selection-start-line="27" selection-start-column="115" selection-end-line="27" selection-end-column="115" />
+          <folding>
+            <element signature="e#113#126#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
