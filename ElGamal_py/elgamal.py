@@ -21,14 +21,14 @@ import math
 
 
 def is_generator(q, g):
-    group = [i for i in range(1, q)]
+    group = [i for i in range(1, q)]                        # Création d'un tableau ayant toutes les valeurs du groupe d'ordre q
     for i in range(1, q):
         try:
             n = g**i % q
-            group.remove(n)
+            group.remove(n)                                 # Pour chaque itération calculer g^i % q et enlever de la liste
         except:
-            return False
-    return True
+            return False                                    # Si il n'est pas possible d'enlever, ça veut dire qu'il à déjà été enlevé donc ce n'est pas un générateur
+    return True                                             # Toutes les valeurs ont été enlevées correctement sans duplication, g est donc générateur
 
 
 def compute_generator(q, g):
@@ -71,7 +71,7 @@ def is_prime(n):                                # Cette fonction vérifie si n e
 
 
 def generator_prime():
-    p = random.randint(100, 10 ** 4)
+    p = random.randint(300, 2 ** 10)
 
     if p % 2 == 0:                              # On le transforme en nombre impair
         p = p + 1
@@ -95,7 +95,6 @@ def generator_keys():
     q = max(prime1, prime2)                     # q a la plus grande valeur
     g = min(prime1, prime2)
 
-    q = 23
     print("Verification : Is", q, "prime ?", is_prime(q))
 
     g = compute_generator(q, g)                 # Calculer/Trouver un générateur à partir du deuxième nombre premier
@@ -123,7 +122,7 @@ def encryption(m, pk):
     c1 = pk[1] ** y % pk[0]                     # Première valeur du chiffré (indice sur le random y)
     s = pk[2] ** y % pk[0]
 
-    c2 = m * s                                  # Deuxième valeur du chiffré (message m chiffré)
+    c2 = m * s % pk[0]                                # Deuxième valeur du chiffré (message m chiffré)
     return c1, c2
 
 
@@ -141,13 +140,25 @@ def decryption(cipher, pk, x):
 
 ''' 
     Fonction qui vérifie si n est un résidu quadratique par rapport à q
+    Fonction vérifiant si n jacobi de q
 '''
+# TODO lorsque le cipher est résidu quadratique, le text clair l'est aussi OK
+# TODO Mais le text clair peut être résidu quadratique sans que son cipher le soit ?
 
-def is_residu_quadratique(q, n):
+
+def is_quadratic_residue(q, n):
     for i in range(1, q):
-        if (i**2) == (n % q):
+        if (i ** 2 % q) == (n % q):
             return True
     return False
+
+
+def compute_jacobi(q, n):
+    r = n**((q-1)/2) % q
+    if int(r) == 1:
+        return 1
+    else:
+        return -1
 
 
 '''
@@ -155,7 +166,7 @@ def is_residu_quadratique(q, n):
 '''
 
 
-m = 6                                         # Message à crypter
+m = 253                                         # Message à crypter
 
 ret = generator_keys()                          # Résultat du générateur
 pk = (ret[0], ret[1], ret[2])                   # Tuple de clés publique
@@ -171,9 +182,9 @@ if m > pk[0]:
 cipher = encryption(m, pk)                      # Récupération des chiffrés
 print("Encryption =", cipher)
 
-print("Le cipher est-il un résidu quadratique de", pk[0], "?", is_residu_quadratique(pk[0], cipher[1]))
-print("Le message est-il un résidu quadratique de", pk[0], "?", is_residu_quadratique(pk[0], m))
-
+print("Le cipher est-il un résidu quadratique de", pk[0], "?", is_quadratic_residue(pk[0], cipher[1]))
+print("Le message est-il un résidu quadratique de", pk[0], "?", is_quadratic_residue(pk[0], m))
+print("")
 
 decrypt = int(decryption(cipher, pk, sk))       # Message décrypté
 print("Décryption =", decrypt)
