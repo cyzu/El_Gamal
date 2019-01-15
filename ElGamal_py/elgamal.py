@@ -89,15 +89,21 @@ def generator_prime():
 
 
 def generator_keys():
+    '''
     prime1 = generator_prime()                  # Génération de deux nombres premiers
     prime2 = generator_prime()
 
     q = max(prime1, prime2)                     # q a la plus grande valeur
     g = min(prime1, prime2)
 
+    q = 11
     print("Verification : Is", q, "prime ?", is_prime(q))
 
     g = compute_generator(q, g)                 # Calculer/Trouver un générateur à partir du deuxième nombre premier
+    '''
+
+    q = 11
+    g = 2
     print("Vérification : Is <" + str(g) + "> a generator ?", is_generator(q, g))
     print("Is", g, "prime ?", is_prime(g))
     print("")
@@ -152,7 +158,7 @@ def is_quadratic_residue(q, n):
             return True
     return False
 
-
+# TODO big integer ! でかすぎてエラー
 def compute_jacobi(q, n):
     r = n**((q-1)/2) % q
     if int(r) == 1:
@@ -166,7 +172,7 @@ def compute_jacobi(q, n):
 '''
 
 
-m = 253                                         # Message à crypter
+m = 11                                         # Message à crypter
 
 ret = generator_keys()                          # Résultat du générateur
 pk = (ret[0], ret[1], ret[2])                   # Tuple de clés publique
@@ -175,15 +181,15 @@ sk = ret[3]                                     # Tuple de clé privée
 print("pk =", pk, "sk =", sk)
 print("Message =", m, "\n")
 
-if m > pk[0]:
+if m >= pk[0]:
     print("Le message est trop grand pour cette clé.")
     exit()
 
 cipher = encryption(m, pk)                      # Récupération des chiffrés
 print("Encryption =", cipher)
 
-print("Le cipher est-il un résidu quadratique de", pk[0], "?", is_quadratic_residue(pk[0], cipher[1]))
-print("Le message est-il un résidu quadratique de", pk[0], "?", is_quadratic_residue(pk[0], m))
+print("Le cipher est-il un résidu quadratique de", pk[0], "?", is_quadratic_residue(pk[0], cipher[1]), compute_jacobi(pk[0], cipher[1]))
+print("Le message est-il un résidu quadratique de", pk[0], "?", is_quadratic_residue(pk[0], m), compute_jacobi(pk[0], m))
 print("")
 
 decrypt = int(decryption(cipher, pk, sk))       # Message décrypté
