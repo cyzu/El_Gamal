@@ -19,13 +19,6 @@ quadratic_residues =[]
 '''
 
 
-def gcd(a, b):
-    if a == 0:
-        return b
-
-    return gcd(b % a, a)
-
-
 def is_generator(q, g):
     group = [False for i in range(1, q)]  # Création d'un tableau de booléan
     for i in range(1, q):
@@ -64,7 +57,7 @@ def generator_generator(q):
         g = random.choice(group)                # Prendre un élément du groupe aléatoirement
         group.remove(g)
 
-        if gcd(q, g) == 1 & is_generator(q, g):
+        if math.gcd(q, g) == 1 & is_generator(q, g):
             return g
     print("There is no generator for", q, "...")
     exit()
@@ -97,9 +90,9 @@ def generator_keys():
 
     q = (2 * prime) + 1
 
-    #################################################################
+    #######################
     # q = 11
-    #################################################################
+    #######################
 
     print("Verification : Is", q, "prime ?", is_prime(q))
     print("Verification : Is", prime, "prime ?", is_prime(prime))
@@ -166,7 +159,6 @@ def is_quadratic_residue(q, n):
     return False
 
 
-# TODO big integer ! でかすぎてエラー
 def compute_jacobi(q, n):
     r = n ** ((q - 1) / 2) % q
     if int(r) == 1:
