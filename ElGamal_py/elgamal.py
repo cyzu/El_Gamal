@@ -10,58 +10,39 @@ Auteur : Chloé BENSOUSSAN
 import random
 import math
 
-# TODO : Implémenter un fonction retournant si mon cipher est un résidu quadratique ou pas (donc mon message aussi)
+
+quadratic_residues =[]
+
 
 ''' 
-    Fonction de vérification que g est un générateur dans le groupe d'ordre q
-    
-    Fonction compute_generator :
-    À partir d'un g, on calcul le générateur de q le plus proche 
+    Fonctions utiles ------------------------------------------------------------------------------------------------
 '''
+
+
+def gcd(a, b):
+    if a == 0:
+        return b
+
+    return gcd(b % a, a)
 
 
 def is_generator(q, g):
-    group = [i for i in range(1, q)]                        # Création d'un tableau ayant toutes les valeurs du groupe d'ordre q
+    group = [False for i in range(1, q)]  # Création d'un tableau de booléan
     for i in range(1, q):
-        try:
-            n = g**i % q
-            group.remove(n)                                 # Pour chaque itération calculer g^i % q et enlever de la liste
-        except:
-            return False                                    # Si il n'est pas possible d'enlever, ça veut dire qu'il à déjà été enlevé donc ce n'est pas un générateur
-    return True                                             # Toutes les valeurs ont été enlevées correctement sans duplication, g est donc générateur
+        n = g**i % q
 
-
-def compute_generator(q, g):
-    gTmp = g
-    while is_generator(q, gTmp) == False & gTmp < q:         # Chercher un générateur dans toutes les valeurs supérieurs ou égale à g
-        gTmp = gTmp + 1
-
-    if is_generator(q, gTmp):
-        return gTmp
-    else:
-        gTmp = g - 1
-        while not is_generator(q, gTmp) & gTmp > 0:         # Chercher un générateur dans toutes les valeurs inférieurs à g
-            gTmp = gTmp - 1
-
-        if is_generator(q, gTmp):
-            return gTmp
+        if group[n-1] == True:              # Si la valeur est déjà obtenue, ce n'est pas un générateur
+            return False
         else:
-            return -1
+            group[n-1] = True
+    return True
 
 
-'''
-    Fonction de vérification que n est premier
-     
-    Fonction générateur :
-    Prend un nombre aléatoire et trouve le premier nombre premier supérieur ou égal à celui-ci
-'''
-
-
-def is_prime(n):                                # Cette fonction vérifie si n est premier
+def is_prime(n):  # Cette fonction vérifie si n est premier
     if n == 2:
         return True
 
-    if n % 2 == 0:                              # Vérification des nombres pair
+    if n % 2 == 0:  # Vérification des nombres pair
         return False
 
     for i in range(3, int(math.sqrt(n)), 2):
@@ -70,86 +51,112 @@ def is_prime(n):                                # Cette fonction vérifie si n e
     return True
 
 
-def generator_prime():
-    p = random.randint(300, 2 ** 10)
+''' 
+    Fonction générateur du nombre premier et d'un générateur --------------------------------------------------------
+'''
 
-    if p % 2 == 0:                              # On le transforme en nombre impair
+
+def generator_generator(q):
+    group = [i for i in range(1, q)]    # Création du groupe
+
+    for i in range(1, q):
+
+        g = random.choice(group)                # Prendre un élément du groupe aléatoirement
+        group.remove(g)
+
+        if gcd(q, g) == 1 & is_generator(q, g):
+            return g
+    print("There is no generator for", q, "...")
+    exit()
+
+
+def generator_prime():
+    p = random.randint(17, 2 ** 10)
+
+    if p % 2 == 0:  # On le transforme en nombre impair
         p = p + 1
 
     while is_prime(p) == False:
         p = p + 2
 
+
     return p
 
 
 ''' 
-    Fonction générateur de clés :
-    Cette fonction génère les clés publiques et privée
+    Fonction Générateur de clés -------------------------------------------------------------------------------------
 '''
 
 
 def generator_keys():
-    '''
-    prime1 = generator_prime()                  # Génération de deux nombres premiers
-    prime2 = generator_prime()
 
-    q = max(prime1, prime2)                     # q a la plus grande valeur
-    g = min(prime1, prime2)
+    prime = generator_prime()
 
-    q = 11
+    while not is_prime(2*prime + 1):                # Générer un nombre premier tel que 2*q+1 est aussi premier
+        prime = generator_prime()
+
+    q = (2 * prime) + 1
+
+    #################################################################
+    # q = 11
+    #################################################################
+
     print("Verification : Is", q, "prime ?", is_prime(q))
+    print("Verification : Is", prime, "prime ?", is_prime(prime))
 
-    g = compute_generator(q, g)                 # Calculer/Trouver un générateur à partir du deuxième nombre premier
-    '''
+    for i in range(0, q):
+        if is_quadratic_residue(q, i):
+            quadratic_residues.append(i)
 
-    q = 11
-    g = 2
+    g = generator_generator(q)
+
+
+    # g = 2
     print("Vérification : Is <" + str(g) + "> a generator ?", is_generator(q, g))
-    print("Is", g, "prime ?", is_prime(g))
     print("")
+
+
 
     if g == -1:
         print("Le programme n'a pas trouvé de générateur pour cet ordre de groupe. Relancer le programme.")
         exit()
 
-    x = random.randint(1, q - 1)                # Clé secrète entre [1, q-1]
-    h = g ** x % q                              # Clé publique
+    x = random.randint(1, q - 1)  # Clé secrète entre [1, q-1]
+    h = g ** x % q  # Clé publique
 
     return q, g, h, x
 
 
 ''' 
-    Fonction d'encryptage
+    Fonction Encryption / Décryption ---------------------------------------------------------------------------------
 '''
 
 
 def encryption(m, pk):
-    y = random.randint(1, pk[0] - 1)            # Valeur aléatoire entre [1, q-1]
-    c1 = pk[1] ** y % pk[0]                     # Première valeur du chiffré (indice sur le random y)
+    m = quadratic_residues[m]
+    print("Message après la bijection :", m)
+
+    y = random.randint(1, pk[0] - 1)  # Valeur aléatoire entre [1, q-1]
+    c1 = pk[1] ** y % pk[0]  # Première valeur du chiffré (indice sur le random y)
     s = pk[2] ** y % pk[0]
 
-    c2 = m * s % pk[0]                                # Deuxième valeur du chiffré (message m chiffré)
+    c2 = m * s  # Deuxième valeur du chiffré (message m chiffré)
     return c1, c2
 
 
-''' 
-    Fonction de décryptage
-'''
-
-
 def decryption(cipher, pk, x):
-    s = cipher[0] ** x % pk[0]                  # Calcul de c1^(-x) % q
-    m = cipher[1] / s % pk[0]                   # Calcul de c2*c1^(-x)
+    s = cipher[0] ** x % pk[0]  # Calcul de c1^(-x) % q
+    m = cipher[1] / s % pk[0]  # Calcul de c2*c1^(-x)
 
-    return m
+    for i in range(0, len(quadratic_residues)):
+        if quadratic_residues[i] == m:
+            return i
+    return False
 
 
 ''' 
-    Fonction qui vérifie si n est un résidu quadratique par rapport à q
-    Fonction vérifiant si n jacobi de q
+    Fonction Calculant le résidue quadratique et le jacobi -----------------------------------------------------------
 '''
-# TODO lorsque le cipher est résidu quadratique, le text clair l'est aussi OK
-# TODO Mais le text clair peut être résidu quadratique sans que son cipher le soit ?
 
 
 def is_quadratic_residue(q, n):
@@ -158,9 +165,10 @@ def is_quadratic_residue(q, n):
             return True
     return False
 
+
 # TODO big integer ! でかすぎてエラー
 def compute_jacobi(q, n):
-    r = n**((q-1)/2) % q
+    r = n ** ((q - 1) / 2) % q
     if int(r) == 1:
         return 1
     else:
@@ -168,15 +176,14 @@ def compute_jacobi(q, n):
 
 
 '''
-    MAIN
+    MAIN -------------------------------------------------------------------------------------------------------------
 '''
 
+ret = generator_keys()  # Résultat du générateur de clés
+pk = (ret[0], ret[1], ret[2])  # Tuple de clés publique
+sk = ret[3]  # Tuple de clé privée
 
-m = 11                                         # Message à crypter
-
-ret = generator_keys()                          # Résultat du générateur
-pk = (ret[0], ret[1], ret[2])                   # Tuple de clés publique
-sk = ret[3]                                     # Tuple de clé privée
+m = random.randint(1, len(quadratic_residues))  # Message à crypter
 
 print("pk =", pk, "sk =", sk)
 print("Message =", m, "\n")
@@ -185,15 +192,14 @@ if m >= pk[0]:
     print("Le message est trop grand pour cette clé.")
     exit()
 
-cipher = encryption(m, pk)                      # Récupération des chiffrés
+cipher = encryption(m, pk)  # Récupération des chiffrés
 print("Encryption =", cipher)
 
-print("Le cipher est-il un résidu quadratique de", pk[0], "?", is_quadratic_residue(pk[0], cipher[1]), compute_jacobi(pk[0], cipher[1]))
-print("Le message est-il un résidu quadratique de", pk[0], "?", is_quadratic_residue(pk[0], m), compute_jacobi(pk[0], m))
-print("")
+# print("Le cipher est-il un résidu quadratique de", pk[0], "?", is_quadratic_residue(pk[0], cipher[1]))
+# print("Le message est-il un résidu quadratique de", pk[0], "?", is_quadratic_residue(pk[0], m))
+# print("")
 
-decrypt = int(decryption(cipher, pk, sk))       # Message décrypté
+decrypt = int(decryption(cipher, pk, sk))  # Message décrypté
 print("Décryption =", decrypt)
-
 
 print("\nIs decryption equal to the message ?", decrypt == m)

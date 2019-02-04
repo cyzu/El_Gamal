@@ -2,8 +2,8 @@
 def is_quadratic_residue(q, n):
     for i in range(1, q):
         if (i**2 % q) == (n % q):
-            return 1
-    return -1
+            return True
+    return False
 
 def compute_jacobi(q, n):
     r = n**((q-1)/2)
