@@ -19,17 +19,9 @@ quadratic_residues = []
 '''
 
 
-# def is_generator(p, g):
-#     group = [False for i in range(1, p)]  # Création d'un tableau de booléan
-#     for i in range(1, p):
-#         n = g**i % p
-#
-#         if group[n-1] == True:              # Si la valeur est déjà obtenue, ce n'est pas un générateur
-#             return False
-#         else:
-#             group[n-1] = True
-#     return True
-
+# group = tous les résidus quadratiques
+# Je génère tous les éléments à partir du générateur et modifie test[n] ++
+# Si tous les résidus quadratique de group[] == 1 dans test[] alors g est un générateur
 def is_generator(group, p, g):
     test = [0 for i in range(1, max(group)+2)]
     for i in range(1, len(group)+1):
@@ -39,8 +31,6 @@ def is_generator(group, p, g):
         if test[i] != 1:
             return False
     return True
-
-
 
 
 def is_prime(n):  # Cette fonction vérifie si n est premier
@@ -61,19 +51,7 @@ def is_prime(n):  # Cette fonction vérifie si n est premier
 '''
 
 
-# def generator_generator(p):
-#     group = [i for i in range(1, p)]    # Création du groupe
-#
-#     for i in range(1, p):
-#
-#         g = random.choice(group)                # Prendre un élément du groupe aléatoirement
-#         group.remove(g)
-#
-#         if math.gcd(p, g) == 1 & is_generator(p, g):
-#             return g
-#     print("There is no generator for", p, "...")
-#     exit()
-
+# Calcule le résidu quadratique de g car g doit être un résidu quadratique de p
 def generator_generator(p, q):
     g = random.randint(2, q)
     return g**2 % p
@@ -87,7 +65,6 @@ def generator_prime():
 
     while is_prime(p) == False:
         p = p + 2
-
 
     return p
 
@@ -107,8 +84,8 @@ def generator_keys():
     p = (2 * q) + 1
 
     #######################
-    p = 11
-    q = 5
+    # p = 11
+    # q = 5
     #######################
 
     print("Verification : Is", p, "prime ?", is_prime(p))
@@ -198,7 +175,6 @@ def square_root_mod(p, m):
         while (t ** 2 ** i) % p != 1:
             i = i + 1
 
-        # b = c ** 2 ** (puissance-i-1)
         b = c ** 2 ** (puissance - i - 1) % p
         puissance = i
         c = b ** 2 % p
